@@ -13,29 +13,52 @@ import {
 
 
 export const BurgerConstructor: FC = () => {
-  const { burgerComponents, isOrderInProgress, currentOrder } =
+  const navigate = useNavigate();
+  const { constructorItems, isOrderInProgress, currentOrder } =
     useSelector(getConstructorState);
-  
+  const isUserAuthenticated = useSelector(getUserState).isUserAuthenticated;
+
+  const dispatch = useDispatch();
+
+  let burger: string[] = [];
+  const ingredients: string[] | void = constructorItems.ingredients.map(
+    (i) => i._id
+  );
+  if (constructorItems.bun) {
+    const bun = constructorItems.bun?._id;
+    burger = [bun, ...ingredients, bun];
+  }
+
   const onOrderClick = () => {
-    if (!burgerComponents.selectedBun || isOrderInProgress) return;
+    if (isUserAuthenticated && constructorItems.bun) {
+      dispatch(setRequest(true));
+      dispatch(orderBurger(burger));
+    } else if (isUserAuthenticated && !constructorItems.bun) {
+      return;
+    } else if (!isUserAuthenticated) {
+      navigate('/login');
+    }
   };
-  const closeOrderModal = () => {};
+  const closeOrderModal = () => {
+    dispatch(setRequest(false));
+    dispatch(resetModal());
+  };
 
   const price = useMemo(
     () =>
-      (burgerComponents.selectedBun ? burgerComponents.selectedBun.price * 2 : 0) +
-      burgerComponents.selectedIngredients.reduce(
+      (constructorItems.bun ? constructorItems.bun.price * 2 : 0) +
+      constructorItems.ingredients.reduce(
         (s: number, v: TConstructorIngredient) => s + v.price,
         0
       ),
-    [burgerComponents]
+    [constructorItems]
   );
 
   return (
     <BurgerConstructorUI
       price={price}
       orderRequest={isOrderInProgress}
-      constructorItems={burgerComponents}
+      constructorItems={constructorItems}
       orderModalData={currentOrder}
       onOrderClick={onOrderClick}
       closeOrderModal={closeOrderModal}

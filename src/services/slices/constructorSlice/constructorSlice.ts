@@ -9,9 +9,9 @@ import { TConstructorIngredient, TIngredient, TOrder } from '@utils-types';
 
 export type TConsturctorState = {
   isLoading: boolean;
-  burgerComponents: {
-    selectedBun: TConstructorIngredient | null;
-    selectedIngredients: TConstructorIngredient[];
+  constructorItems: {
+    bun: TConstructorIngredient | null;
+    ingredients: TConstructorIngredient[];
   };
   isOrderInProgress: boolean;
   currentOrder: TOrder | null;
@@ -20,9 +20,9 @@ export type TConsturctorState = {
 
 export const initialState: TConsturctorState = {
   isLoading: false,
-  burgerComponents: {
-    selectedBun: null,
-    selectedIngredients: []
+  constructorItems: {
+    bun: null,
+    ingredients: []
   },
   isOrderInProgress: false,
   currentOrder: null,
@@ -44,9 +44,9 @@ export const constructorSlice = createSlice({
     addIngredient: {
       reducer(state, action: PayloadAction<TConstructorIngredient>) {
         if (action.payload.type === 'bun') {
-          state.burgerComponents.selectedBun = action.payload;
+          state.constructorItems.bun = action.payload;
         } else {
-          state.burgerComponents.selectedIngredients.push(action.payload);
+          state.constructorItems.ingredients.push(action.payload);
         }
       },
       prepare(ingredient: TIngredient) {
@@ -59,15 +59,15 @@ export const constructorSlice = createSlice({
       }
     },
     removeIngredient(state, action: PayloadAction<string>) {
-      state.burgerComponents.selectedIngredients =
-        state.burgerComponents.selectedIngredients.filter(
+      state.constructorItems.ingredients =
+        state.constructorItems.ingredients.filter(
           (item: TConstructorIngredient) => item.id !== action.payload
         );
     },
     moveIngredientUp(state, action: PayloadAction<number>) {
       const index = action.payload;
-      if (index > 0 && index < state.burgerComponents.selectedIngredients.length) {
-        const ingredients = state.burgerComponents.selectedIngredients;
+      if (index > 0 && index < state.constructorItems.ingredients.length) {
+        const ingredients = state.constructorItems.ingredients;
         [ingredients[index - 1], ingredients[index]] = [
           ingredients[index],
           ingredients[index - 1]
@@ -76,7 +76,7 @@ export const constructorSlice = createSlice({
     },
     moveIngredientDown(state, action: PayloadAction<number>) {
       const index = action.payload;
-      const ingredients = state.burgerComponents.selectedIngredients;
+      const ingredients = state.constructorItems.ingredients;
       if (index >= 0 && index < ingredients.length - 1) {
         [ingredients[index], ingredients[index + 1]] = [
           ingredients[index + 1],
@@ -90,6 +90,9 @@ export const constructorSlice = createSlice({
     resetModal(state) {
       state.currentOrder = null;
     }
+  },
+  selectors:{
+    getConstructorState: (state) => state
   },
   extraReducers(builder) {
     builder
@@ -108,16 +111,11 @@ export const constructorSlice = createSlice({
         state.isOrderInProgress = false;
         state.errorMessage = null;
         state.currentOrder = action.payload.order;
-        state.burgerComponents = {
-          selectedBun: null,
-          selectedIngredients: []
+        state.constructorItems = {
+          bun: null,
+          ingredients: []
         };
       });
-  },
-  selectors: {
-    getConstructorState(state) {
-      return state;
-    }
   }
 });
 
@@ -130,6 +128,7 @@ export const {
   resetModal
 } = constructorSlice.actions;
 
-export const { getConstructorState } = constructorSlice.selectors;
+export const getConstructorState = (state: { constructor: TConsturctorState }) =>
+  state.constructor;
 
 export default constructorSlice.reducer;
