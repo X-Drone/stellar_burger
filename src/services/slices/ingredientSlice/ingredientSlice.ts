@@ -34,7 +34,8 @@ const ingredientSlice = createSlice({
       })
       .addCase(getIngredients.rejected, (state, action) => {
         state.isLoading = false;
-        state.errorMessage = action.error.message || 'Error fetching ingredients';
+        state.errorMessage =
+          action.error.message || 'Error fetching ingredients';
       })
       .addCase(getIngredients.fulfilled, (state, action) => {
         state.isLoading = false;

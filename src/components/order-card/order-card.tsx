@@ -4,7 +4,7 @@ import { OrderCardProps } from './type';
 import { TIngredient } from '@utils-types';
 import { OrderCardUI } from '../ui/order-card';
 import { useSelector } from '../../services/store';
-import { getIngredientState } from 'src/services/slices/ingredientSlice/ingredientSlice';
+import { getIngredientState } from '../../services/slices/ingredientSlice/ingredientSlice';
 
 const maxIngredients = 6;
 
@@ -18,7 +18,9 @@ export const OrderCard: FC<OrderCardProps> = memo(({ order }) => {
 
     const ingredientsInfo = order.ingredients.reduce(
       (acc: TIngredient[], item: string) => {
-        const ingredient = ingredientList.find((ing: { _id: string; }) => ing._id === item);
+        const ingredient = ingredientList.find(
+          (ing: { _id: string }) => ing._id === item
+        );
         if (ingredient) return [...acc, ingredient];
         return acc;
       },

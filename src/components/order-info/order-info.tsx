@@ -7,7 +7,7 @@ import {
   getOrderState
 } from '../../services/slices/orderSlice/orderSlice';
 import { getIngredientState } from '../../services/slices/ingredientSlice/ingredientSlice';
-import { useDispatch, useSelector } from 'src/services/store';
+import { useDispatch, useSelector } from '../../services/store';
 import { useParams } from 'react-router-dom';
 
 export const OrderInfo: FC = () => {

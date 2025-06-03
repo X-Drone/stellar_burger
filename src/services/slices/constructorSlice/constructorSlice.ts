@@ -91,7 +91,7 @@ export const constructorSlice = createSlice({
       state.currentOrder = null;
     }
   },
-  selectors:{
+  selectors: {
     getConstructorState: (state) => state
   },
   extraReducers(builder) {
@@ -128,7 +128,8 @@ export const {
   resetModal
 } = constructorSlice.actions;
 
-export const getConstructorState = (state: { constructor: TConsturctorState }) =>
-  state.constructor;
+export const getConstructorState = (state: {
+  constructor: TConsturctorState;
+}) => state.constructor;
 
 export default constructorSlice.reducer;

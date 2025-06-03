@@ -4,22 +4,20 @@ import { Preloader } from '../ui/preloader';
 import { getUserState } from '../../services/slices/useSlice/userSlice';
 
 type ProtectedRouteProps = {
-  onlyUnAuth?: boolean;
+  onlyAuth?: boolean;
 };
 
-export const ProtectedRoute = ({
-  onlyUnAuth
-}: ProtectedRouteProps) => {
+export const ProtectedRoute = ({ onlyAuth: Auth }: ProtectedRouteProps) => {
   const location = useLocation();
 
   const isAuthChecked = useSelector(getUserState).isAuthenticationChecked;
   const isAuthenticated = useSelector(getUserState).isUserAuthenticated;
 
-  if (!onlyUnAuth && !isAuthenticated) {
+  if (!Auth && !isAuthenticated) {
     return <Navigate replace to='/login' state={{ from: location }} />;
   }
 
-  if (onlyUnAuth && isAuthenticated) {
+  if (Auth && isAuthenticated) {
     const from = location.state?.from || { pathname: '/' };
     return <Navigate replace to={from} />;
   }
