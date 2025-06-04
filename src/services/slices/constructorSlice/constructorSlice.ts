@@ -128,8 +128,7 @@ export const {
   resetModal
 } = constructorSlice.actions;
 
-export const getConstructorState = (state: {
-  constructor: TConsturctorState;
-}) => state.constructor;
+export const getConstructorState = (state: { builder: TConsturctorState }) =>
+  state.builder;
 
 export default constructorSlice.reducer;

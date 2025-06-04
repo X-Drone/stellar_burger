@@ -19,6 +19,7 @@ import { useDispatch } from '../../services/store';
 import { useEffect } from 'react';
 import { getUser } from '../../services/slices/useSlice/userSlice';
 import { getIngredients } from '../../services/slices/ingredientSlice/ingredientSlice';
+import { CenteringComponent } from '../centering-component/centering-component';
 
 const App = () => {
   const location = useLocation();
@@ -35,9 +36,23 @@ const App = () => {
       <AppHeader />
       <Routes location={background || location}>
         <Route path='/' element={<ConstructorPage />} />
-        <Route path='/ingredients/:id' element={<IngredientDetails />} />
+        <Route
+          path='/ingredients/:id'
+          element={
+            <CenteringComponent title={'Детали ингредиента'}>
+              <IngredientDetails />
+            </CenteringComponent>
+          }
+        />
         <Route path='/feed' element={<Feed />} />
-        <Route path='/feed/:number' element={<OrderInfo />} />
+        <Route
+          path='/feed/:number'
+          element={
+            <CenteringComponent title={`#${location.pathname.match(/\d+/)}`}>
+              <OrderInfo />
+            </CenteringComponent>
+          }
+        />
         <Route element={<ProtectedRoute onlyAuth />}>
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
@@ -47,7 +62,14 @@ const App = () => {
         <Route element={<ProtectedRoute onlyAuth={false} />}>
           <Route path='/profile' element={<Profile />} />
           <Route path='/profile/orders' element={<ProfileOrders />} />
-          <Route path='/profile/orders/:number' element={<OrderInfo />} />
+          <Route
+            path='/profile/orders/:number'
+            element={
+              <CenteringComponent title={`#${location.pathname.match(/\d+/)}`}>
+                <OrderInfo />
+              </CenteringComponent>
+            }
+          />
         </Route>
         <Route path='*' element={<NotFound404 />} />
       </Routes>

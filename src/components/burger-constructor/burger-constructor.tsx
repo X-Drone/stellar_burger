@@ -20,6 +20,9 @@ export const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
 
   let burger: string[] = [];
+  if (!constructorItems || !Array.isArray(constructorItems.ingredients)) {
+    return <div>Ингредиенты не загружены</div>;
+  }
   const ingredients: string[] | void = constructorItems.ingredients.map(
     (i) => i._id
   );
