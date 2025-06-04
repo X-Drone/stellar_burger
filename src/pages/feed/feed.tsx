@@ -9,7 +9,7 @@ import {
 } from '../../services/slices/feedSlice/feedSlice';
 
 export const Feed: FC = () => {
-  const { orderList, isLoading } = useSelector(getFeedState);
+  const { orders: orderList, isLoading } = useSelector(getFeedState);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getFeeds());
@@ -19,5 +19,7 @@ export const Feed: FC = () => {
     return <Preloader />;
   }
 
-  <FeedUI orders={orderList} handleGetFeeds={() => {}} />;
+  return (
+    <FeedUI orders={orderList} handleGetFeeds={() => dispatch(getFeeds())} />
+  );
 };

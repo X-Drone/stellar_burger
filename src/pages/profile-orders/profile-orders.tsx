@@ -3,7 +3,10 @@ import { ProfileOrdersUI } from '@ui-pages';
 import { TOrder } from '@utils-types';
 import { FC, useEffect } from 'react';
 import { getFeeds } from '../../services/slices/feedSlice/feedSlice';
-import { getOrdersAll, getUserState } from '../../services/slices/useSlice/userSlice';
+import {
+  getOrdersAll,
+  getUserState
+} from '../../services/slices/useSlice/userSlice';
 import { Preloader } from '@ui';
 
 export const ProfileOrders: FC = () => {

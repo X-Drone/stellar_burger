@@ -3,17 +3,17 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 
 type TFeedState = {
-  orderList: TOrder[];
-  totalOrders: number;
-  todayOrderCount: number;
+  orders: TOrder[];
+  total: number;
+  totalToday: number;
   isLoading: boolean;
   errorMessage: string | null;
 };
 
 export const initialState: TFeedState = {
-  orderList: [],
-  totalOrders: 0,
-  todayOrderCount: 0,
+  orders: [],
+  total: 0,
+  totalToday: 0,
   isLoading: false,
   errorMessage: null
 };
@@ -40,9 +40,9 @@ export const feedSlice = createSlice({
       .addCase(getFeeds.fulfilled, (state, action) => {
         state.isLoading = false;
         state.errorMessage = null;
-        state.orderList = action.payload.orders;
-        state.totalOrders = action.payload.total;
-        state.todayOrderCount = action.payload.totalToday;
+        state.orders = action.payload.orders;
+        state.total = action.payload.total;
+        state.totalToday = action.payload.totalToday;
       });
   }
 });
