@@ -7,7 +7,7 @@ import { FeedInfoUIProps, HalfColumnProps, TColumnProps } from './type';
 export const FeedInfoUI: FC<FeedInfoUIProps> = memo(
   ({ feed, readyOrders, pendingOrders }) => {
     const { total, totalToday } = feed;
-
+    console.log(total, totalToday);
     return (
       <section>
         <div className={styles.columns}>

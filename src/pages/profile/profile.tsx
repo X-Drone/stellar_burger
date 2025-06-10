@@ -1,11 +1,17 @@
+import { useDispatch, useSelector } from '@store';
 import { ProfileUI } from '@ui-pages';
 import { FC, SyntheticEvent, useEffect, useState } from 'react';
+import { getUserState } from '../../services/slices/useSlice/userSlice';
+import { Preloader } from '@ui';
 
 export const Profile: FC = () => {
-  /** TODO: взять переменную из стора */
+  const data = useSelector(getUserState).currentUser;
+  const loading = useSelector(getUserState).isLoading;
+  const dispatch = useDispatch();
+
   const user = {
-    name: '',
-    email: ''
+    name: data?.name || '',
+    email: data?.email || ''
   };
 
   const [formValue, setFormValue] = useState({
@@ -46,6 +52,10 @@ export const Profile: FC = () => {
       [e.target.name]: e.target.value
     }));
   };
+
+  if (loading) {
+    return <Preloader />;
+  }
 
   return (
     <ProfileUI
