@@ -61,6 +61,9 @@ describe('Product Assembly Workflow', () => {
     cy.contains('Начинки').as('fillingsSection');
     cy.contains(COMPONENTS.topBun).as('selectedBun');
     cy.contains(COMPONENTS.mainFilling).as('selectedFilling');
+    cy.contains('Выберите булки')
+      .should('exist')
+      .as('chooseBun');
     cy.contains('Оформить заказ').as('submitButton');
     
     cy.get('@headline').should('exist', { timeout: RESPONSE_TIMEOUT });
@@ -83,7 +86,12 @@ describe('Product Assembly Workflow', () => {
       .scrollIntoView({ duration: 500 })
       .next()
       .click({ force: true });
-      
+    
+    cy.get('@chooseBun')
+      .within(() => {
+        cy.contains(COMPONENTS.topBun).should('exist');
+      })
+    
     cy.get('@selectedBun')
       .should('be.visible', { timeout: RESPONSE_TIMEOUT });
   });
@@ -96,9 +104,14 @@ describe('Product Assembly Workflow', () => {
     cy.get('@selectedFilling')
       .next()
       .click();
+    
+    cy.get('[test-cy=\'choose-bun\']')
+      .within(() => {
+        cy.contains(COMPONENTS.mainFilling).should('exist');
+      })
       
     cy.get('@selectedFilling')
-      .should('be.visible');
+      .should('contain.text', COMPONENTS.mainFilling);
   });
 
   it('Order Creation Flow', () => {
@@ -126,14 +139,26 @@ describe('Product Assembly Workflow', () => {
 
   it('Component Details Modal Management', () => {
     cy.contains(COMPONENTS.topBun).click();
-    cy.url().should('include', '/ingredients/');
+
+    cy.get('[test-cy=\'modal\']')
+      .should('be.visible')
+      .within(() => {
+        cy.contains(COMPONENTS.topBun).should('exist');
+      });
+    
     cy.get('body').type('{esc}');
-    cy.url().should('eq', `${BASE_URL}/`);
+    cy.get('[test-cy=\'modal\']').should('not.exist');
   });
 
   it('Modal Dismissal Interaction', () => {
     cy.contains(COMPONENTS.topBun).click();
+    cy.get('[test-cy=\'modal\']').should('be.visible')
     cy.get('body').click(10, 10);
-    cy.url().should('eq', `${BASE_URL}/`);
+    cy.get('[test-cy=\'modal\']').should('not.exist');
+  });
+
+  afterEach(() => {
+    cy.clearCookies();
+    cy.clearLocalStorage();
   });
 });
