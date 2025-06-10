@@ -1,0 +1,17 @@
+{
+  "success": true,
+  "name": "Test Burger",
+  "order": {
+    "number": 12345,
+    "ingredients": [
+      "60d3b41abdacab0026a733c6",
+      "60d3b41abdacab0026a733c8",
+      "60d3b41abdacab0026a733cc"
+    ],
+    "_id": "order123",
+    "status": "pending",
+    "name": "Test Burger",
+    "createdAt": "2024-01-25T12:00:00.000Z",
+    "updatedAt": "2024-01-25T12:00:00.000Z"
+  }
+}
